@@ -17,6 +17,15 @@ async function loginUser(email, password) {
   throw new Error("Invalid credentials");
 }
 
+async function findUserById(userId) {
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    return user;
+  } catch (error) {
+    throw new Error("Error finding user by ID");
+  }
+}
+
 async function updateProfile(userId, profileData) {
   const updatedUser = await UserModel.updateUser(userId, profileData);
   return updatedUser;
@@ -41,4 +50,11 @@ async function deleteUser(userId) {
   await UserModel.deleteUser(userId);
 }
 
-export { registerUser, loginUser, updateProfile, updatePassword, deleteUser };
+export {
+  registerUser,
+  loginUser,
+  findUserById,
+  updateProfile,
+  updatePassword,
+  deleteUser,
+};

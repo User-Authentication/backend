@@ -39,11 +39,23 @@ async function login(req, res) {
   }
 }
 
+async function getUserProfile(req, res) {
+  try {
+    const user = await userService.findUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const { password, ...userDetails } = user;
+    res.json(userDetails);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user profile" });
+  }
+}
+
 async function updateProfile(req, res) {
   try {
     const userId = req.user.id;
     const { first_name, last_name } = req.body;
-
     const updatedUser = await userService.updateProfile(userId, {
       first_name,
       last_name,
@@ -88,4 +100,11 @@ async function deleteUser(req, res) {
   }
 }
 
-export { register, login, updateProfile, updatePassword, deleteUser };
+export {
+  register,
+  login,
+  getUserProfile,
+  updateProfile,
+  updatePassword,
+  deleteUser,
+};
