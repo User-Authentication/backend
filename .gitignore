@@ -1,4 +1,5 @@
 # Node modules
 node_modules/
-knexfile.csj
+knexfile.cjs
 migrations/
+.DS_Store
