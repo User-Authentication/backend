@@ -19,7 +19,7 @@ async function loginUser(email, password) {
 
 async function findUserById(userId) {
   try {
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await UserModel.findUserById(userId);
     return user;
   } catch (error) {
     throw new Error("Error finding user by ID");
