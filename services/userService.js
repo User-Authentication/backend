@@ -1,17 +1,44 @@
-import * as UserModel from '../models/User.js';
-import bcrypt from 'bcryptjs';
+// services/userService.js
+import bcrypt from "bcryptjs";
+import * as UserModel from "../models/User.js";
 
 async function registerUser(userData) {
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  return await UserModel.createUser({ ...userData, password: hashedPassword });
+  const { password } = userData;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const updatedUserDetails = { ...userData, password: hashedPassword };
+  return await UserModel.createUser(updatedUserDetails);
 }
 
 async function loginUser(email, password) {
   const user = await UserModel.findUserByEmail(email);
-  if (user && await bcrypt.compare(password, user.password)) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     return user;
   }
-  throw new Error('Invalid credentials');
+  throw new Error("Invalid credentials");
 }
 
-export { registerUser, loginUser };
+async function updateProfile(userId, profileData) {
+  const updatedUser = await UserModel.updateUser(userId, profileData);
+  return updatedUser;
+}
+
+async function updatePassword(userId, currentPassword, newPassword) {
+  const user = await UserModel.findUserById(userId);
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    throw new Error("Current password is incorrect");
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const updatedUser = await UserModel.updateUser(userId, {
+    password: hashedPassword,
+  });
+  return updatedUser;
+}
+
+async function deleteUser(userId) {
+  await UserModel.deleteUser(userId);
+}
+
+export { registerUser, loginUser, updateProfile, updatePassword, deleteUser };
