@@ -1,4 +1,4 @@
-// services/userService.js
+
 import bcrypt from "bcryptjs";
 import * as UserModel from "../models/User.js";
 
@@ -38,7 +38,7 @@ async function updatePassword(userId, currentPassword, newPassword) {
   if (!isMatch) {
     throw new Error("Current password is incorrect");
   }
-
+// hasing the password, so that it is not visible
   const hashedPassword = await bcrypt.hash(newPassword, 10);
   const updatedUser = await UserModel.updateUser(userId, {
     password: hashedPassword,
