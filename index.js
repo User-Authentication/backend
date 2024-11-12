@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://str8bat-assignment.netlify.app/signup",
   })
 );
 const PORT = process.env.PORT;
