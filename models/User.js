@@ -1,4 +1,4 @@
-// models/User.js
+
 import client from "../config/db.js";
 
 async function createUser(userData) {
