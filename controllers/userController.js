@@ -1,4 +1,4 @@
-// controllers/userController.js
+
 import jwt from "jsonwebtoken";
 import * as userService from "../services/userService.js";
 
@@ -96,13 +96,13 @@ async function deleteUser(req, res) {
     const userId = req.user.id;
     const { email } = req.body;
 
-    // Retrieve the user's profile
+    // retriving user profile
     const user = await userService.findUserById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
 
-    // Check if the provided email matches the logged-in user's email
+    // validating for the email match 
     if (user.email !== email) {
       return res
         .status(400)
